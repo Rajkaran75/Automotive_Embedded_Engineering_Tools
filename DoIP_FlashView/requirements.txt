@@ -1,0 +1,30 @@
+# DoIP FlashView — Python Requirements
+#
+# DoIP FlashView uses only Python standard library modules.
+# No pip packages need to be installed.
+#
+# Python 3.8 or newer is required.
+#
+# ------------------------------------------------------------
+# EXTERNAL SYSTEM DEPENDENCY — tshark (Wireshark CLI)
+# ------------------------------------------------------------
+# tshark must be installed separately and available on PATH.
+#
+# Windows:  https://www.wireshark.org/download.html
+#           (enable "Add tshark to PATH" during Wireshark install)
+#
+# Linux:    sudo apt install tshark
+#           sudo dnf install wireshark-cli
+#
+# macOS:    brew install wireshark
+#
+# Verify:   tshark --version
+# ------------------------------------------------------------
+#
+# Standard library modules used (no install needed):
+#   tkinter, ttk        - GUI
+#   subprocess          - tshark execution
+#   threading           - background analysis
+#   collections         - stream packet counting
+#   ctypes              - Windows DPI awareness
+#   os, sys             - file path and platform helpers
