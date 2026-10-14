@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Truck diagnostics wiring diagram</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  svg { display: block; width: 100%; height: auto; }
+  .t  { fill: var(--hatch-widget-text, #111); }
+  .m  { fill: var(--hatch-widget-muted, #666); }
+  .box{ fill: var(--hatch-widget-surface, #f8fafc); stroke: var(--hatch-widget-border, #94a3b8); stroke-width: 1.5; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .pinletter { fill: #fff; font-weight: 700; font-size: 10px; text-anchor: middle; dominant-baseline: central; }
+  .lbl { font-size: 12.5px; }
+  .small { font-size: 11.5px; }
+  .boxtitle { font-size: 15px; font-weight: 700; text-anchor: middle; }
+  .boxsub { font-size: 12px; text-anchor: middle; }
+</style>
+</head>
+<body>
+<svg viewBox="0 0 1000 620" role="img" aria-label="Wiring diagram: truck diagnostic port to adapter to Raspberry Pi">
+  <text x="500" y="32" text-anchor="middle" class="t" font-size="20" font-weight="700">How it all connects</text>
+  <text x="500" y="56" text-anchor="middle" class="m" font-size="13">Truck &rarr; your cable &rarr; adapter &rarr; USB &rarr; Raspberry Pi</text>
+
+  <!-- ============ TRUCK ============ -->
+  <rect x="20" y="90" width="220" height="300" rx="12" class="box"/>
+  <text x="130" y="118" class="t boxtitle">TRUCK</text>
+  <text x="130" y="138" class="m boxsub">9-pin diagnostic port</text>
+  <circle cx="130" cy="235" r="64" fill="none" stroke="var(--hatch-widget-border,#94a3b8)" stroke-width="2"/>
+  <!-- pins -->
+  <circle cx="168" cy="192" r="11" fill="#EAB308" stroke="#854d0e" stroke-width="1.5"/>
+  <text x="168" y="192" class="pinletter">C</text>
+  <circle cx="184" cy="232" r="11" fill="#22C55E" stroke="#166534" stroke-width="1.5"/>
+  <text x="184" y="232" class="pinletter">D</text>
+  <circle cx="152" cy="276" r="11" fill="#475569" stroke="#1e293b" stroke-width="1.5"/>
+  <text x="152" y="276" class="pinletter">A</text>
+  <circle cx="106" cy="280" r="11" fill="#EF4444" stroke="#991b1b" stroke-width="1.5"/>
+  <text x="106" y="280" class="pinletter">B</text>
+  <!-- legend -->
+  <circle cx="42" cy="318" r="6" fill="#EAB308"/><text x="54" y="322" class="t lbl">C &middot; CAN_H</text>
+  <circle cx="150" cy="318" r="6" fill="#22C55E"/><text x="162" y="322" class="t lbl">D &middot; CAN_L</text>
+  <circle cx="42" cy="342" r="6" fill="#475569"/><text x="54" y="346" class="t lbl">A &middot; Ground</text>
+  <circle cx="150" cy="342" r="6" fill="#EF4444"/><text x="162" y="346" class="t lbl">B &middot; +12/24V</text>
+  <text x="42" y="368" class="m small">E &middot; shield &rarr; shell (optional)</text>
+
+  <!-- ============ WIRES (your cable) ============ -->
+  <text x="300" y="112" text-anchor="middle" class="m small">your Deutsch &rarr; DB9 cable</text>
+  <text x="300" y="128" text-anchor="middle" class="m small">(rebuild splices first)</text>
+  <path d="M 179 192 C 260 192, 310 175, 394 175" fill="none" stroke="#EAB308" stroke-width="5"/>
+  <path d="M 195 232 C 270 232, 315 250, 394 250" fill="none" stroke="#22C55E" stroke-width="5"/>
+  <path d="M 163 276 C 250 276, 315 325, 394 325" fill="none" stroke="#475569" stroke-width="5"/>
+  <text x="300" y="168" text-anchor="middle" class="t small">C &rarr; 7</text>
+  <text x="300" y="243" text-anchor="middle" class="t small">D &rarr; 2</text>
+  <text x="300" y="318" text-anchor="middle" class="t small">A &rarr; 3</text>
+  <!-- B stub: does not connect -->
+  <path d="M 117 280 L 196 280" fill="none" stroke="#EF4444" stroke-width="5"/>
+  <circle cx="214" cy="280" r="12" fill="#EF4444"/>
+  <text x="214" y="281" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">&#10005;</text>
+  <text x="234" y="276" class="lbl" fill="#DC2626">B (+12/24V)</text>
+  <text x="234" y="292" class="lbl" fill="#DC2626">never connects</text>
+
+  <!-- ============ ADAPTER ============ -->
+  <rect x="400" y="90" width="280" height="300" rx="12" class="box"/>
+  <text x="540" y="118" class="t boxtitle">ADAPTER</text>
+  <text x="540" y="138" class="m boxsub">InnoMaker USB2CAN</text>
+  <polygon points="400,160 446,175 446,335 400,350" fill="var(--hatch-widget-surface,#f8fafc)"
+           stroke="var(--hatch-widget-text,#111)" stroke-width="2"/>
+  <text x="404" y="150" class="m small">DB9</text>
+  <text x="456" y="180" class="t lbl">7 &middot; CAN_H</text>
+  <text x="456" y="255" class="t lbl">2 &middot; CAN_L</text>
+  <text x="456" y="330" class="t lbl">3 &middot; GND</text>
+  <text x="540" y="368" text-anchor="middle" class="m small">TERMI jumper OFF &middot; module seated on headers (&#9651;)</text>
+  <rect x="670" y="238" width="10" height="24" fill="var(--hatch-widget-muted,#666)"/>
+  <text x="652" y="222" text-anchor="middle" class="m small">micro-USB</text>
+
+  <!-- ============ USB CABLE ============ -->
+  <line x1="682" y1="250" x2="778" y2="250" stroke="#3B82F6" stroke-width="6" stroke-linecap="round"/>
+  <text x="730" y="230" text-anchor="middle" class="t lbl">USB cable</text>
+  <text x="730" y="278" text-anchor="middle" class="m small">(included)</text>
+
+  <!-- ============ RASPBERRY PI ============ -->
+  <rect x="780" y="90" width="200" height="300" rx="12" class="box"/>
+  <text x="880" y="118" class="t boxtitle">RASPBERRY PI</text>
+  <text x="880" y="138" class="m boxsub">untouched &mdash; just USB</text>
+  <rect x="780" y="238" width="10" height="24" fill="var(--hatch-widget-muted,#666)"/>
+  <text x="880" y="200" text-anchor="middle" class="t lbl">shows up as <tspan class="mono">can0</tspan></text>
+  <text x="880" y="222" text-anchor="middle" class="t lbl">no driver needed</text>
+  <text x="880" y="258" text-anchor="middle" class="m small">then run:</text>
+  <text x="880" y="278" text-anchor="middle" class="t mono" font-size="10.5">sudo ip link set can0</text>
+  <text x="880" y="294" text-anchor="middle" class="t mono" font-size="10.5">up type can bitrate 500000</text>
+  <text x="880" y="312" text-anchor="middle" class="m small">older trucks: 250000</text>
+  <text x="880" y="352" text-anchor="middle" class="m small">no GPIO, no HAT,</text>
+  <text x="880" y="368" text-anchor="middle" class="m small">no opening the case</text>
+
+  <!-- ============ NOTES ============ -->
+  <text x="20" y="432" class="t" font-size="14" font-weight="700">Before it touches the truck:</text>
+  <text x="20" y="458" class="t lbl">1 &middot; Meter-check: C&rarr;DB9-7, D&rarr;DB9-2, A&rarr;DB9-3 continuous &middot; no shorts between pins &middot; B isolated.</text>
+  <text x="20" y="484" class="t lbl">2 &middot; Pin numbers are molded in tiny digits next to each hole &mdash; count them, don&rsquo;t guess by position.</text>
+  <text x="20" y="510" class="t lbl">3 &middot; Rebuild the taped splices on your cable with heat-shrink first.</text>
+  <text x="20" y="536" class="t lbl">4 &middot; The adapter is USB-powered. Truck battery power (Deutsch B) never touches the DB9.</text>
+  <text x="20" y="572" class="m small">Wire colors: yellow = CAN_H &middot; green = CAN_L &middot; dark = ground &middot; red = battery (do not connect) &middot; blue = USB</text>
+</svg>
+</body>
+</html>
