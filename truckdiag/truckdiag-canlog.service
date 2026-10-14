@@ -1,0 +1,30 @@
+# truckdiag-canlog.service — headless CAN logger, starts on boot.
+#
+# Install once at home:
+#   sudo cp ~/truckdiag/truckdiag-canlog.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable truckdiag-canlog.service
+#
+# Then every boot with the USB2CAN adapter plugged in, the Pi finds the
+# working bitrate and logs all CAN traffic to ~/canlogs/ — no screen,
+# no keyboard, no SSH needed.
+#
+# Check it:   systemctl status truckdiag-canlog.service
+# Logs live:  ~/canlogs/candump-*.log   and   ~/canlogs/logger-status.log
+# Stop it:    sudo systemctl stop truckdiag-canlog.service
+# Disable:    sudo systemctl disable truckdiag-canlog.service
+
+[Unit]
+Description=TruckDiag headless CAN logger
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Environment=PI_USER=kodi
+ExecStart=/home/kodi/truckdiag/start_canlog.sh
+Restart=always
+RestartSec=20
+
+[Install]
+WantedBy=multi-user.target
