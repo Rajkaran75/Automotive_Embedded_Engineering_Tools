@@ -1,3 +1,5 @@
+[![truckdiag CI](https://github.com/Rajkaran75/Automotive_Embedded_Engineering_Tools/actions/workflows/truckdiag-ci.yml/badge.svg)](https://github.com/Rajkaran75/Automotive_Embedded_Engineering_Tools/actions/workflows/truckdiag-ci.yml)
+
 # truckdiag — DIY J1939 diagnostics for Class 8 trucks
 
 Reads live engine/transmission/electrical parameters and diagnostic trouble
