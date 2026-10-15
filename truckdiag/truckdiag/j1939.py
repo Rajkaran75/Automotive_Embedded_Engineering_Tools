@@ -57,8 +57,20 @@ def request_pgn_frame(pgn, source=TOOL_SOURCE_ADDRESS, destination=0xFF):
 
 
 def clear_dtcs_frame(which="inactive", source=TOOL_SOURCE_ADDRESS):
-    """Build a DTC-clear frame. 'inactive' -> DM3, 'active' -> DM11 (broadcast)."""
-    pgn = DM3 if which == "inactive" else DM11
+    """Build a DTC-clear frame. 'inactive' -> DM3, 'active' -> DM11 (broadcast).
+
+    Anything else raises ValueError. The old fall-through mapped every
+    unknown argument to DM11 (clear *active* codes) -- the destructive
+    option -- so a typo like clear_dtcs_frame("inactve") would have
+    cleared active faults instead of failing loudly.
+    """
+    if which == "inactive":
+        pgn = DM3
+    elif which == "active":
+        pgn = DM11
+    else:
+        raise ValueError(
+            "which must be 'inactive' or 'active', got %r" % (which,))
     return encode_can_id(6, pgn, source), b""
 
 
