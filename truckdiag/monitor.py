@@ -43,8 +43,9 @@ def main():
                     help="use real SocketCAN interface on Linux (e.g. can0)")
     ap.add_argument("--slcan", metavar="PORT",
                     help="use SLCAN over a serial port, e.g. COM3 on Windows")
-    ap.add_argument("--bitrate", type=int, default=500000,
-                    help="CAN bitrate in bps (default 500000; try 250000 on older trucks)")
+    ap.add_argument("--bitrate", type=int, default=250000,
+                    help="CAN bitrate in bps (default 250000, the J1939 standard; "
+                         "try 500000 on newer networks)")
     ap.add_argument("--demo", action="store_true",
                     help="run the simulated ECU in-process (no truck needed)")
     ap.add_argument("--profile", default=DEFAULT_PROFILE, choices=sorted(PROFILES),
@@ -93,8 +94,8 @@ def main():
             if msg is not None and msg.is_extended_id:
                 if msg.arbitration_id is None:
                     continue
-                pgn = decode_can_id(msg.arbitration_id)["pgn"]
-                src = decode_can_id(msg.arbitration_id)["source"]
+                info = decode_can_id(msg.arbitration_id)
+                pgn, src = info["pgn"], info["source"]
                 if pgn == ACKM:
                     ack = parse_acknowledgment(msg.data)
                     if ack:
