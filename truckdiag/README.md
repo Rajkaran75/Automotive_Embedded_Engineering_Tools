@@ -18,10 +18,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python dtc_tool.py read --demo
 
 # run the test suite (unit + end-to-end over a virtual bus):
-.venv/bin/python tests/test_decoder.py
-.venv/bin/python tests/test_transport.py
-.venv/bin/python tests/test_thresholds.py
-.venv/bin/python tests/test_e2e.py
+.venv/bin/python -m pytest tests/ -q
 ```
 
 `dtc_tool.py read` / `dtc_tool.py clear` read and clear fault codes
@@ -94,6 +91,9 @@ Windows driver or SLCAN firmware — the Pi route avoids all of that.
 - `sim_ecu.py` — simulated ECU for development without a truck
 - `monitor.py` — live dashboard (`--demo` = simulated truck,
   `--profile dd15-older` for pre-Gen 5 engines)
+- `webdash.py` — phone-friendly web dashboard (`--demo` or
+  `--socketcan can0`); listen-only on real hardware, serves live values,
+  alerts, and fault codes at `http://<pi-ip>:8080/`
 - `dtc_tool.py` — `read` / `clear` fault codes; `read` reports NACKs vs silence
 
 ## Health alerts
@@ -106,14 +106,25 @@ Gen 5, coolant normal 175–195°F with a 234°F maximum, DEF warning ~10%.
 Parameters with no verified band (boost, oil temp, fuel rate, ...) are
 never flagged — the tool says nothing rather than invent a limit.
 
+## Validation status
+
+Honest scoping: this tool is **bench-validated against a simulated ECU
+with real USB2CAN hardware** (the adapter's 120Ω termination behavior
+was verified with a meter; the simulator's frames exercise the full
+decode path on the real interface). **No real-truck frames have been
+captured yet — on-road validation is planned.** Everything the decoder knows was checked against the SAE
+J1939DA (September 2023) and cross-verified against independent
+references; the simulator's frame layouts match the decoder byte for
+byte, and the 45-test suite runs green on every push (CI badge above).
+
 ## Aftertreatment
 
-DEF tank level decodes live from PGN 65110 (SPN 1761). DPF PGNs
-(64891 soot/ash, 64892 regen control, 64946 differential pressure) are
-recognized and named but **not byte-decoded** — their exact public-domain
-byte layouts couldn't be verified from an authoritative source, so the
-tool shows them as raw hex rather than guessing. DPF fault codes (e.g.
-SPN 3719, 1761, 3697–3703) still decode with real names in DM1/DM2.
+DEF tank level decodes live from PGN 65110 (SPN 1761). The DPF PGNs are
+fully byte-decoded against the J1939DA extract (September 2023):
+64891 (soot/ash load, time since regen, regen threshold), 64892 (DPFC1
+lamp commands and regen-inhibit reasons, down to the bit fields), and
+64946 (DPF temperatures and differential pressure). DPF fault codes
+(e.g. SPN 3719, 1761, 3697–3717) decode with real names in DM1/DM2.
 
 ## Roadmap
 
