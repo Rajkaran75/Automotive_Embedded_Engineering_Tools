@@ -10,7 +10,7 @@
 #   - installs system packages (python3, venv, can-utils)
 #   - creates ~/truckdiag/.venv and installs python-can
 #   - smoke-tests the decoder against the simulated ECU (no truck needed)
-#   - optionally configures can0 to come up at boot at 500000 bps
+#   - optionally configures can0 to come up at boot at 250000 bps
 set -euo pipefail
 
 PROJ="$HOME/truckdiag"
@@ -33,19 +33,19 @@ python3 -m venv "$PROJ/.venv"
 echo "==> Smoke test (simulated ECU, no truck needed)..."
 (cd "$PROJ" && .venv/bin/python tests/test_decoder.py && .venv/bin/python tests/test_e2e.py)
 
-read -r -p "Configure can0 to come up at boot at 500000 bps? [y/N] " ans
+read -r -p "Configure can0 to come up at boot at 250000 bps? [y/N] " ans
 if [[ "$ans" =~ ^[Yy]$ ]]; then
     sudo tee /etc/network/interfaces.d/can0 >/dev/null <<'EOF'
 auto can0
 iface can0 inet manual
-    pre-up /sbin/ip link set can0 up type can bitrate 500000
+    pre-up /sbin/ip link set can0 up type can bitrate 250000
     up /sbin/ip link set can0 up
     down /sbin/ip link set can0 down
 EOF
     echo "can0 will come up at boot. Activate now with: sudo ifup can0"
 else
     echo "Skipped. Bring it up manually when the adapter is plugged in:"
-    echo "  sudo ip link set can0 up type can bitrate 500000"
+    echo "  sudo ip link set can0 up type can bitrate 250000"
 fi
 
 echo
