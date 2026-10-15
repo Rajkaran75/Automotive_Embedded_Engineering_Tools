@@ -101,8 +101,9 @@ def main():
                     help="use real SocketCAN interface on Linux (e.g. can0)")
     ap.add_argument("--slcan", metavar="PORT",
                     help="use SLCAN over a serial port, e.g. COM3 on Windows")
-    ap.add_argument("--bitrate", type=int, default=500000,
-                    help="CAN bitrate in bps (default 500000; try 250000 on older trucks)")
+    ap.add_argument("--bitrate", type=int, default=250000,
+                    help="CAN bitrate in bps (default 250000, the J1939 standard; "
+                         "try 500000 on newer networks)")
     ap.add_argument("--demo", action="store_true",
                     help="run the simulated ECU in-process (no truck needed)")
     args = ap.parse_args()
