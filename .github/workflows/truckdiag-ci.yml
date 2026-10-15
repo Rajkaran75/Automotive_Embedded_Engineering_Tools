@@ -23,7 +23,4 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Run test suite
         run: |
-          python tests/test_decoder.py
-          python tests/test_transport.py
-          python tests/test_thresholds.py
-          python tests/test_e2e.py
+          python -m pytest tests/ -q
