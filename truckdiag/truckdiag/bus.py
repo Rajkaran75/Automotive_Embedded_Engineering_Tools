@@ -17,5 +17,9 @@ def open_bus(interface="virtual", channel="truckdiag", bitrate=250000):
     if interface == "slcan":
         return can.interface.Bus(channel=channel, interface="slcan",
                                  bitrate=bitrate)
-    return can.interface.Bus(channel=channel, interface="socketcan",
-                             bitrate=bitrate)
+    if interface == "socketcan":
+        return can.interface.Bus(channel=channel, interface="socketcan",
+                                 bitrate=bitrate)
+    raise ValueError(
+        "unknown interface %r: expected 'virtual', 'socketcan', or 'slcan'"
+        % (interface,))
