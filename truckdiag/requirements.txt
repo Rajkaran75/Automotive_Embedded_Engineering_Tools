@@ -1,1 +1,2 @@
 python-can
+pytest  # test suite: python -m pytest tests/ -q
