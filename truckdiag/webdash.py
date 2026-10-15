@@ -1,6 +1,8 @@
 """Web dashboard: live J1939 values on your phone's browser.
 
-Listen-only -- this server never transmits on the CAN bus.
+Listen-only on real hardware -- the reader thread never transmits on the
+CAN bus. (In --demo mode the in-process simulator does transmit, but only
+simulated frames on the virtual bus, never on real hardware.)
 
 Usage:
   .venv/bin/python webdash.py --demo
